@@ -156,7 +156,7 @@ export function matchLegs(slip, gamesBySport) {
     stake: slip.stake ?? null,
     odds: odds ?? null,
     legs,
-    warnings: warnings.map((w) => String(w).replace(/—/g, '-')),
+    warnings: warnings.map((w) => String(w).replace(/\u2014/g, '-')),
   };
 }
 

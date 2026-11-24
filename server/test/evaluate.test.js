@@ -296,6 +296,6 @@ describe('overlay', () => {
     assert.equal(b.toWin, 52);
     assert.equal(b.status, 'winning');
     assert.deepEqual(b.legs[1], { label: 'LAL -4.5', detail: 'LAL 88-80 SAC Q3 5:12 | covering by 3.5', status: 'winning' });
-    assert.ok(!JSON.stringify(o).includes('—'));
+    assert.ok(!JSON.stringify(o).includes('\u2014'));
   });
 });

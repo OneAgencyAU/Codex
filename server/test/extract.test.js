@@ -120,7 +120,7 @@ describe('Claude request', () => {
       (e) => e.status === 502 && /Could not reach/.test(e.message));
   });
   test('prompt and schema contain no em dashes', () => {
-    assert.ok(!SYSTEM_PROMPT.includes('—'));
-    assert.ok(!JSON.stringify(SLIP_SCHEMA).includes('—'));
+    assert.ok(!SYSTEM_PROMPT.includes('\u2014'));
+    assert.ok(!JSON.stringify(SLIP_SCHEMA).includes('\u2014'));
   });
 });

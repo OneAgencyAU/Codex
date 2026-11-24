@@ -6,6 +6,12 @@ Rules from the user: confirm before building, no em dashes anywhere, nothing is 
 end to end on the real TV with Kayo and League Pass playing, keep it simple, use agents for coding,
 deliver docs as self contained HTML files (not .md).
 
+Git safety on this Mac (important)
+- The user's HOME folder (/Users/trips) is itself a git repo belonging to another project, holding private
+  files. Never run git add, commit, init or push there. Work only inside ~/bet-tracker (its own clone).
+  Check with `git rev-parse --show-toplevel` (must print /Users/trips/bet-tracker) before any git command.
+- Always `git pull` before starting: the server/ code was still being finished by a cloud session.
+
 Decisions already made by the user
 - Backend runs on this Mac (Node, server/). Phone page served by it on the home Wi-Fi.
 - Live data: ESPN unofficial JSON only (free). User accepted that Disney terms forbid automated access.
@@ -24,7 +30,9 @@ What exists in this repo (branch claude/new-session-wfy9du)
   appop, whitelists from doze, configures the server URL. Needs `adb` on PATH:
   export PATH="$HOME/platform-tools:$PATH"
 - scripts/tv-keylog.sh <TV_IP>: logcat of key codes (tag BetOverlay) to choose the two keys.
-- server/: Node backend + phone page. Check `git log` and server tests for its verified state.
+- server/: Node backend + phone page. NOT yet verified by anyone: the cloud session handed off before its
+  review. Before relying on it: npm install, npm test, start it, open the phone page, add a manual bet
+  against a real ESPN game, and check GET /api/overlay matches CONTRACT.json.txt. Fix what fails.
 
 Next steps, in order (report back to the user after each)
 1. Part 1: print device info and package names (setup-tv.sh steps 2 and 3, or getprop / pm list packages).
