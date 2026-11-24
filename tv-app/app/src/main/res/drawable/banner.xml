@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 320x180 TV launcher banner -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    <path android:fillColor="#101418" android:pathData="M0,0h320v180h-320z" />
+    <!-- mini panel -->
+    <path android:fillColor="#2A3038" android:pathData="M176,28h120a10,10 0,0 1,10 10v104a10,10 0,0 1,-10 10h-120a10,10 0,0 1,-10 -10v-104a10,10 0,0 1,10 -10z" />
+    <path android:fillColor="#3DDC84" android:pathData="M190,50m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0" />
+    <path android:fillColor="#E6E6E6" android:pathData="M204,46h80v8h-80z" />
+    <path android:fillColor="#FF5A5F" android:pathData="M190,80m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0" />
+    <path android:fillColor="#E6E6E6" android:pathData="M204,76h64v8h-64z" />
+    <path android:fillColor="#B0B0B0" android:pathData="M190,110m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0" />
+    <path android:fillColor="#E6E6E6" android:pathData="M204,106h72v8h-72z" />
+    <path android:fillColor="#FFB020" android:pathData="M190,134m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0" />
+    <path android:fillColor="#E6E6E6" android:pathData="M204,130h52v8h-52z" />
+    <!-- "BETS" block letters -->
+    <path android:fillColor="#3DDC84" android:pathData="M24,62h8v56h-8z M24,62h20v8h-20z M24,86h20v8h-20z M24,110h20v8h-20z M44,70h6v16h-6z M44,94h6v16h-6z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M58,62h8v56h-8z M58,62h24v8h-24z M58,86h18v8h-18z M58,110h24v8h-24z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M88,62h28v8h-28z M98,62h8v56h-8z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M122,62h26v8h-26z M122,62h8v32h-8z M122,86h26v8h-26z M140,86h8v32h-8z M122,110h26v8h-26z" />
+</vector>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bet Overlay</string>
+    <string name="service_label">Bet Overlay panel</string>
+    <string name="service_description">Shows your bet tracker panel over other apps and listens for two remote buttons</string>
+</resources>
