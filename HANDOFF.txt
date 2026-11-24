@@ -1,0 +1,44 @@
+TV Bet Tracker: handoff for a Claude Code session running on the user's Mac
+==========================================================================
+
+Read this first, then the brief the user gave (TV_Bet_Tracker_Brief_for_Claude_Code.pdf, ask them for it).
+Rules from the user: confirm before building, no em dashes anywhere, nothing is "done" until verified
+end to end on the real TV with Kayo and League Pass playing, keep it simple, use agents for coding,
+deliver docs as self contained HTML files (not .md).
+
+Decisions already made by the user
+- Backend runs on this Mac (Node, server/). Phone page served by it on the home Wi-Fi.
+- Live data: ESPN unofficial JSON only (free). User accepted that Disney terms forbid automated access.
+- TV access: ADB over Wi-Fi from this Mac. CONFIRMED: `~/platform-tools/adb devices` shows
+  192.168.1.5:5555 device (USB debugging on; the TV has no "Wireless debugging" menu).
+- TV: TCL "Smart TV Pro", Android 12. adb is at ~/platform-tools/adb (not on PATH).
+
+What exists in this repo (branch claude/new-session-wfy9du)
+- CONTRACT.json.txt: JSON the TV polls from GET http://<mac-ip>:8787/api/overlay every 3s.
+- tv-app/: Android app, package au.home.betoverlay. One AccessibilityService draws the panel as
+  TYPE_ACCESSIBILITY_OVERLAY (not focusable, not touchable) and filters only two remote keys.
+  Prebuilt APK: tv-app/dist/bet-overlay-debug.apk. Builds with ./gradlew assembleDebug (needs Android SDK).
+  NOT yet run on any device.
+- scripts/setup-tv.sh <TV_IP:5555> http://<mac-ip>:8787 : connects, prints device info and Kayo/NBA
+  packages, installs APK, appends our service to enabled_accessibility_services, sets TCL AUTO_START
+  appop, whitelists from doze, configures the server URL. Needs `adb` on PATH:
+  export PATH="$HOME/platform-tools:$PATH"
+- scripts/tv-keylog.sh <TV_IP>: logcat of key codes (tag BetOverlay) to choose the two keys.
+- server/: Node backend + phone page. Check `git log` and server tests for its verified state.
+
+Next steps, in order (report back to the user after each)
+1. Part 1: print device info and package names (setup-tv.sh steps 2 and 3, or getprop / pm list packages).
+   Confirm Kayo and NBA League Pass package names. Check `dumpsys package <pkg> | grep HIDE_OVERLAY`.
+2. Start the server on the Mac: cd server && npm install && npm test && npm start. Find the Mac's LAN IP
+   (ipconfig getifaddr en0). Recommend a DHCP reservation on the router so it stays fixed.
+3. Run scripts/setup-tv.sh 192.168.1.5:5555 http://<mac-ip>:8787. Check TCL Safety Guard auto launch.
+4. Run tv-keylog.sh, have the user press candidate buttons, pick two that Kayo and League Pass ignore,
+   set them: adb shell am start -n au.home.betoverlay/.SetupActivity --ei toggle_key N --ei cycle_key M --ez headless true
+5. Verify on the real TV: panel over Kayo and over League Pass, no playback interruption or focus loss,
+   both keys work, D-pad not laggy, readable from the couch. adb exec-out screencap may show black video
+   (DRM) but the panel should still appear. Ask the user to confirm visually.
+6. Phone: add a bet, confirm it shows on TV within a few seconds. Live status during a real game.
+7. Reboot the TV (adb reboot), reconnect, confirm the panel returns and the server URL/keys persist.
+   Set the server to start at login on the Mac (launchd LaunchAgent) and verify after a Mac restart.
+8. Screenshot reading needs ANTHROPIC_API_KEY in the server environment on the Mac (never in chat).
+9. Final: short summary of what was built, where it runs, how to update it (as an HTML file).

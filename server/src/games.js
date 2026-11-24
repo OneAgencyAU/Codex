@@ -7,9 +7,10 @@ export async function listGames(espn, sport, now = Date.now()) {
   const dates = [];
   for (let i = 0; i < 7; i++) dates.push(espnDate(new Date(now + i * DAY_MS)));
   const unique = [...new Set(dates)];
-  const requests = sport === 'nfl'
-    ? [espn.scoreboard('nfl'), espn.scoreboard('nfl', `${unique[0]}-${unique[unique.length - 1]}`)]
-    : unique.map((d) => espn.scoreboard('nba', d));
+  // One scoreboard per ESPN day (date ranges are rejected by ESPN). NFL also
+  // gets the current week scoreboard, which needs no date.
+  const requests = unique.map((d) => espn.scoreboard(sport, d));
+  if (sport === 'nfl') requests.push(espn.scoreboard('nfl'));
   const settled = await Promise.allSettled(requests);
   const ok = settled.filter((r) => r.status === 'fulfilled');
   if (ok.length === 0) throw new Error(`Could not load ${sport.toUpperCase()} games from ESPN`);
