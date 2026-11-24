@@ -30,9 +30,11 @@ What exists in this repo (branch claude/new-session-wfy9du)
   appop, whitelists from doze, configures the server URL. Needs `adb` on PATH:
   export PATH="$HOME/platform-tools:$PATH"
 - scripts/tv-keylog.sh <TV_IP>: logcat of key codes (tag BetOverlay) to choose the two keys.
-- server/: Node backend + phone page. NOT yet verified by anyone: the cloud session handed off before its
-  review. Before relying on it: npm install, npm test, start it, open the phone page, add a manual bet
-  against a real ESPN game, and check GET /api/overlay matches CONTRACT.json.txt. Fix what fails.
+- server/: Node backend + phone page (node >= 20, one dependency @anthropic-ai/sdk). Verified in the cloud:
+  npm test 71/71 pass; a real bet on finished ESPN game 401910038 settled correctly via the live ESPN
+  fetch and appeared in /api/overlay per CONTRACT.json.txt; phone page tested in Playwright at phone size.
+  NOT verified: running on this Mac, a game in progress (only unit tested), and screenshot reading with a
+  real ANTHROPIC_API_KEY. Re-run npm test on the Mac before step 2.
 
 Next steps, in order (report back to the user after each)
 1. Part 1: print device info and package names (setup-tv.sh steps 2 and 3, or getprop / pm list packages).
