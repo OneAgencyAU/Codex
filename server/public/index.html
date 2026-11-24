@@ -167,6 +167,12 @@ function timeText(iso) {
   return d.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' }) + ' ' + t;
 }
 
+function shortTime(iso) {
+  const d = new Date(iso);
+  const t = d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }).replace(' ', '').toLowerCase();
+  return (d.toDateString() === new Date().toDateString() ? 'Today' : d.toLocaleDateString([], { weekday: 'short' })) + ' ' + t;
+}
+
 // ---------- games ----------
 const gamesCache = {};
 async function loadGames(sport) {
@@ -230,9 +236,7 @@ function renderLeg(leg, i, multi) {
   } });
   const gameHint = h('div', { class: 'hint' });
   fillGames(gameSel, gameHint, leg);
-  wrap.append(h('div', { class: 'row' },
-    h('div', { style: 'flex:0 0 96px' }, h('label', {}, 'Sport'), sportSel),
-    h('div', {}, h('label', {}, 'Game'), gameSel)), gameHint);
+  wrap.append(h('label', {}, 'Sport'), sportSel, h('label', {}, 'Game'), gameSel, gameHint);
 
   const m = leg.market;
   if (m === 'h2h' || m === 'line') {
@@ -284,7 +288,7 @@ function fillGames(sel, hint, leg) {
     const ids = new Set();
     for (const g of list) {
       ids.add(g.id);
-      sel.append(h('option', { value: g.id }, g.label + '  ' + (g.state === 'in' ? 'LIVE' : timeText(g.start))));
+      sel.append(h('option', { value: g.id }, g.label + '  ' + (g.state === 'in' ? 'LIVE' : shortTime(g.start))));
     }
     if (leg.gameId && !ids.has(leg.gameId)) sel.append(h('option', { value: leg.gameId }, (leg.gameLabel || leg.gameId) + (leg.gameStart ? '  ' + timeText(leg.gameStart) : '')));
     sel.value = leg.gameId || '';
@@ -309,6 +313,7 @@ $('betType').addEventListener('change', (e) => {
     form.legs = [first];
   }
   form.type = v;
+  $('formMsg').textContent = '';
   renderForm();
 });
 $('addLeg').addEventListener('click', () => { const last = form.legs[form.legs.length - 1]; form.legs.push(blankLeg('h2h', last ? last.sport : 'nba')); renderForm(); });
