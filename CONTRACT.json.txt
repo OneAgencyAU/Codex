@@ -1,0 +1,31 @@
+Shared contract between the server (server/) and the TV app (tv-app/).
+
+The TV app polls:  GET http://<server-host>:8787/api/overlay   every 3 seconds.
+No auth. Response is JSON, UTF-8, Content-Type application/json:
+
+{
+  "updatedAt": "2026-11-24T10:15:03.120Z",
+  "dayPnl": 12.5,                 // number, realised profit and loss for bets settled today (server local day)
+  "currency": "$",
+  "bets": [                       // active bets plus bets settled in the last 30 minutes; newest first; max 8
+    {
+      "id": "b_abc123",
+      "title": "Multi (3 legs)",  // or the single leg label, e.g. "Lakers -4.5"
+      "stake": 10,
+      "odds": 6.2,                // decimal odds for the whole bet
+      "toWin": 52,                // profit if it wins (stake * odds - stake), 2dp
+      "status": "winning",        // one of: pending, winning, losing, won, lost, void
+      "legs": [
+        {
+          "label": "LAL -4.5",                       // short, max about 28 chars
+          "detail": "LAL 88-80 SAC Q3 5:12 | covering by 3.5",  // live number line, max about 48 chars
+          "status": "winning"                        // pending, winning, losing, won, lost, void
+        }
+      ]
+    }
+  ]
+}
+
+Status colours on TV: winning and won = green (#3DDC84), losing and lost = red (#FF5A5F),
+pending = grey (#B0B0B0), void = amber (#FFB020).
+Text must never contain em dashes.
